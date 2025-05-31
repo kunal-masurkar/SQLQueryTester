@@ -1,0 +1,45 @@
+test_cases:
+  - name: "Create Users Table"
+    query: |
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE,
+        age INTEGER
+      );
+    expected_output:
+      affected_rows: 0
+
+  - name: "Insert Test User"
+    query: |
+      INSERT INTO users (name, email, age) 
+      VALUES ('John Doe', 'john@example.com', 30);
+    expected_output:
+      affected_rows: 1
+
+  - name: "Select All Users"
+    query: |
+      SELECT * FROM users;
+    expected_output:
+      - id: 1
+        name: "John Doe"
+        email: "john@example.com"
+        age: 30
+
+  - name: "Update User Age"
+    query: |
+      UPDATE users 
+      SET age = 31 
+      WHERE email = 'john@example.com';
+    expected_output:
+      affected_rows: 1
+
+  - name: "Select Updated User"
+    query: |
+      SELECT * FROM users 
+      WHERE email = 'john@example.com';
+    expected_output:
+      - id: 1
+        name: "John Doe"
+        email: "john@example.com"
+        age: 31 

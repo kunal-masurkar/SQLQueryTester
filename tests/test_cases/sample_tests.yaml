@@ -1,0 +1,69 @@
+test_cases:
+  - name: "Basic SELECT query"
+    query: "SELECT * FROM users WHERE id = 1;"
+    expected_output:
+      - id: 1
+        name: "John Doe"
+        email: "john@example.com"
+    type: "SELECT"
+
+  - name: "INSERT query"
+    query: "INSERT INTO users (name, email) VALUES ('Jane Doe', 'jane@example.com');"
+    expected_output:
+      affected_rows: 1
+    type: "INSERT"
+
+  - name: "UPDATE query"
+    query: "UPDATE users SET name = 'John Smith' WHERE id = 1;"
+    expected_output:
+      affected_rows: 1
+    type: "UPDATE"
+
+  - name: "DELETE query"
+    query: "DELETE FROM users WHERE id = 2;"
+    expected_output:
+      affected_rows: 1
+    type: "DELETE"
+
+  - name: "JOIN query"
+    query: |
+      SELECT u.name, o.order_id, o.total
+      FROM users u
+      JOIN orders o ON u.id = o.user_id
+      WHERE o.total > 1000;
+    expected_output:
+      - name: "John Doe"
+        order_id: 101
+        total: 1500
+      - name: "Jane Doe"
+        order_id: 102
+        total: 2000
+    type: "SELECT"
+
+  - name: "Aggregate query"
+    query: |
+      SELECT user_id, COUNT(*) as order_count, SUM(total) as total_amount
+      FROM orders
+      GROUP BY user_id
+      HAVING COUNT(*) > 1;
+    expected_output:
+      - user_id: 1
+        order_count: 3
+        total_amount: 3500
+    type: "SELECT"
+
+  - name: "Subquery test"
+    query: |
+      SELECT name, email
+      FROM users
+      WHERE id IN (
+        SELECT user_id
+        FROM orders
+        WHERE total > 1000
+      );
+    expected_output:
+      - name: "John Doe"
+        email: "john@example.com"
+      - name: "Jane Doe"
+        email: "jane@example.com"
+    type: "SELECT" 
