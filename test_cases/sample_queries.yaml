@@ -1,0 +1,59 @@
+test_cases:
+  - name: "Basic SELECT Query"
+    query: "SELECT * FROM employees"
+    expected_output:
+      - {"id": 1, "name": "John Doe", "department": "IT", "salary": 75000}
+      - {"id": 2, "name": "Jane Smith", "department": "HR", "salary": 65000}
+      - {"id": 3, "name": "Bob Johnson", "department": "Finance", "salary": 80000}
+
+  - name: "SELECT with WHERE Clause"
+    query: "SELECT name, salary FROM employees WHERE department = 'IT'"
+    expected_output:
+      - {"name": "John Doe", "salary": 75000}
+
+  - name: "SELECT with ORDER BY"
+    query: "SELECT * FROM employees ORDER BY salary DESC"
+    expected_output:
+      - {"id": 3, "name": "Bob Johnson", "department": "Finance", "salary": 80000}
+      - {"id": 1, "name": "John Doe", "department": "IT", "salary": 75000}
+      - {"id": 2, "name": "Jane Smith", "department": "HR", "salary": 65000}
+
+  - name: "SELECT with JOIN"
+    query: "SELECT e.name, d.department_name FROM employees e JOIN departments d ON e.department = d.department_code"
+    expected_output:
+      - {"name": "John Doe", "department_name": "Information Technology"}
+      - {"name": "Jane Smith", "department_name": "Human Resources"}
+      - {"name": "Bob Johnson", "department_name": "Finance"}
+
+  - name: "INSERT Query"
+    query: "INSERT INTO employees (name, department, salary) VALUES ('Alice Brown', 'Marketing', 70000)"
+    expected_output:
+      affected_rows: 1
+
+  - name: "UPDATE Query"
+    query: "UPDATE employees SET salary = 80000 WHERE name = 'John Doe'"
+    expected_output:
+      affected_rows: 1
+
+  - name: "DELETE Query"
+    query: "DELETE FROM employees WHERE department = 'HR'"
+    expected_output:
+      affected_rows: 1
+
+  - name: "Aggregate Function"
+    query: "SELECT department, AVG(salary) as avg_salary FROM employees GROUP BY department"
+    expected_output:
+      - {"department": "IT", "avg_salary": 75000}
+      - {"department": "HR", "avg_salary": 65000}
+      - {"department": "Finance", "avg_salary": 80000}
+
+  - name: "Subquery"
+    query: "SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees)"
+    expected_output:
+      - {"name": "Bob Johnson", "salary": 80000}
+
+  - name: "Complex Query with Multiple Clauses"
+    query: "SELECT department, COUNT(*) as employee_count, AVG(salary) as avg_salary FROM employees WHERE salary > 70000 GROUP BY department HAVING COUNT(*) > 1 ORDER BY avg_salary DESC"
+    expected_output:
+      - {"department": "IT", "employee_count": 2, "avg_salary": 77500}
+      - {"department": "Finance", "employee_count": 2, "avg_salary": 75000} 
