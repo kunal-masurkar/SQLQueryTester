@@ -16,14 +16,21 @@ A hybrid SQL query testing tool that allows you to write, execute, and validate 
 ```
 SQLQueryTester/
 ├── modules/
-│   ├── __init__.py
+│   ├── __init__.py          # Package initialization and exports
 │   ├── query_executor.py    # Handles database connections and query execution
-│   └── test_manager.py      # Manages test cases and test execution
+│   ├── test_manager.py      # Manages test cases and test execution
+│   ├── security.py          # SQL injection and security checks
+│   └── reporter.py          # Test result reporting and visualization
 ├── test_cases/
 │   └── sample_queries.yaml  # Sample test cases
-├── schema.sql              # Database schema and sample data
-├── requirements.txt        # Project dependencies
-└── README.md              # This file
+├── tests/                   # Unit and integration tests
+├── templates/              # Web interface templates
+├── reports/               # Generated test reports
+├── schema.sql            # Database schema and sample data
+├── app.py               # Flask web application
+├── config.py           # Configuration settings
+├── requirements.txt    # Project dependencies
+└── README.md          # This file
 ```
 
 ## Prerequisites
